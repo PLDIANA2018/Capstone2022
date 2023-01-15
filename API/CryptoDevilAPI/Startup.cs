@@ -37,17 +37,21 @@ namespace CryptoDevilAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CryptoDevilAPI", Version = "v1" });
             });
 
-            IMongoClient client = new MongoClient("mongodb+srv://CapstoneTest2022:CryptoDevil2022@cluster0.qa0sl.mongodb.net/CryptoDevil?retryWrites=true&w=majority");
+            IMongoClient client = new MongoClient("mongodb+srv://xxxx:xxxx@cluster0.qa0sl.mongodb.net/CryptoDevil?retryWrites=true&w=majority");
             IMongoDatabase database = client.GetDatabase("CryptoDevil");
             var userExchangeCollection = database.GetCollection<UserExchange>("UserExchange");
             var exchangeCollection = database.GetCollection<Exchange>("Exchange");
+            var candleCollection = database.GetCollection<Candle>("Candles");
             ExchangeDA exchangeDA = new ExchangeDA(exchangeCollection);
             UserExchangeDA userExchangeDA = new UserExchangeDA(userExchangeCollection);
+            CandleDataDA candleDataDA = new CandleDataDA(candleCollection);
             services.AddSingleton<IExchangeDA>(exchangeDA);
             services.AddSingleton<IUserExchangeDA>(userExchangeDA);
+            services.AddSingleton<ICandleDataDA>(candleDataDA);
             services.AddScoped<IUserExchangeRepository, UserExchangeRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IUserDataRepository, UserDataRepository>();
+            services.AddScoped<IExchangeRepository, ExchangeRepository>();
 
             services.AddAuthorization(options =>
             {
